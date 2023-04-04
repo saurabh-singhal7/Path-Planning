@@ -1,5 +1,6 @@
 import sys
 import cv2
+import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import euclidean
@@ -122,32 +123,26 @@ def dijkstra(adjacency_matrix, start_vertex):
                 parents[vertex_index] = nearest_vertex
                 shortest_distances[vertex_index] = shortest_distance + edge_distance
  
-    print_solution(start_vertex, shortest_distances, parents)
- 
- 
-# A utility function to print
-# the constructed distances
-# array and shortest paths
-def print_solution(start_vertex, distances, parents):
-    n_vertices = len(distances)
-    print("Vertex\t Distance\tPath")
-     
-    for vertex_index in range(n_vertices):
-        if vertex_index != start_vertex:
-            print("\n", start_vertex, "->", vertex_index, "\t\t", distances[vertex_index], "\t\t", end="")
-            print_path(vertex_index, parents)
- 
- 
-# Function to print shortest path
-# from source to current_vertex
-# using parents array
-def print_path(current_vertex, parents):
+    saveSol(adjacency_matrix, parents)
+
+def saveSol(graph, parents):
+    path1 = []
+    path2 = []
+    path1 = print_path(1, parents, path1)
+    path2 = print_path(2, parents, path2)
+    with open('manual path.pkl', 'wb') as f:
+        pickle.dump(graph, f, 3)
+        pickle.dump(path1, f, 3)
+        pickle.dump(path2, f, 3)
+
+def print_path(current_vertex, parents, path):
     # Base case : Source node has
     # been processed
     if current_vertex == NO_PARENT:
         return
-    print_path(parents[current_vertex], parents)
-    print(current_vertex, end=" ")
+    print_path(parents[current_vertex], parents, path)
+    path.append(current_vertex)
+    return path
 
 def main():
     demoTrack = cv2.imread("C:/Users/saura/Desktop/Purdue Classes/Spring 2023/MFET 442/Lab 10/knoy_demo_track.jpg")
