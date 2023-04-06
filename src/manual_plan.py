@@ -1,3 +1,6 @@
+# The Graph class is inspired by ChatGPT
+# and the dijkstra function is inspired by
+# GeeksForGeeks
 # imports
 import sys
 import cv2
